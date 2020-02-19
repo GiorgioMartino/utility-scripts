@@ -1,0 +1,20 @@
+#!/bin/bash
+
+echo Which is the extension of the files you\'d like to remove the audio from?
+read extension
+
+len=${#extension}
+len=$((len+2))
+files=*\.$extension
+
+for file in $files
+do
+	#Take file name without extension and remove last char
+	f=${file:0:(-$len)}\.$extension
+	echo $file
+	ffmpeg -i "$file" -an -vcodec copy "$f"
+	if [ $? -eq 0 ]
+	then
+	   rm "$file"
+	fi
+done
